@@ -101,6 +101,6 @@ public class ContextTester extends AbstractContextClient {
 	}
 
 	public static void main(String[] args) {
-		new ContextTester("test");
+		new ContextTester("cops");
 	}
 }
