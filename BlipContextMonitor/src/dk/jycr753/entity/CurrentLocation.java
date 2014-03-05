@@ -19,7 +19,7 @@ public class CurrentLocation extends GenericEntity{
 						   int currentFloor,
 						   char currentSector,
 						   int currentRoom)
-	{
+	{	
 		super(locationId);
 		this.currentFloor = currentFloor;
 		this.currentSector = currentSector;
