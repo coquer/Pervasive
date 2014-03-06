@@ -1,5 +1,8 @@
 package dk.jycr753.itu;
 
+import java.text.DecimalFormat;
+import java.util.Locale;
+
 import dk.jycr753.itu.GetLocation.LocationResult;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -82,10 +85,40 @@ public class MainActivity extends Activity implements LocationListener {
 				   Toast.LENGTH_SHORT).show();
 		double lat = (double)(location.getLatitude());
 		double log = (double)(location.getLongitude());
+		double distanceToITU = getDistance(lat, log );
+		//distanceToITU = reduceNumberOfDecimals(distanceToITU);
 		TextView textViewAndroidLat = (TextView) findViewById(R.id.set_location_text_view);
-		textViewAndroidLat.setText(String.valueOf(lat) + " " + String.valueOf(log));
+		DecimalFormat formater = (DecimalFormat)DecimalFormat.getInstance(Locale.US); 
+		formater.applyPattern("00.00");
+		String tmp = formater.format(distanceToITU);
+		if(distanceToITU > 0.2){
+			textViewAndroidLat.setText(tmp + " KM from ITU");
+		}else{
+			textViewAndroidLat.setText("You Are in ITU");
+		}
+		
+		
 		
 	}
+	
+	private static double getDistance( double lat2 ,double lon2){
+		double lat1 = 55.669669;
+		double lon1 = 12.5880716;
+		// formula
+		//d=acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon1-lon2));	
+		double distanceCalculation = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));		
+		double finalDistance = distanceCalculation * 60 * 1.1515;
+		double kmfromlocation = finalDistance * 1.609344;
+		 
+		 return kmfromlocation;
+	 }
+	
+	private static double reduceNumberOfDecimals(double number){
+		DecimalFormat formater = (DecimalFormat)DecimalFormat.getInstance(Locale.US); 
+		formater.applyPattern("00.00");
+		return Math.round(number * 10000);
+	}
+
 
 	@Override
 	public void onProviderDisabled(String provider) {
@@ -125,5 +158,5 @@ public class MainActivity extends Activity implements LocationListener {
 	        });
 	        AlertDialog alert = alertDialogBuilder.create();
 	        alert.show();
-	    }
+	 }
 }
