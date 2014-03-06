@@ -24,53 +24,11 @@ public class MainActivity extends Activity implements LocationListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		System.out.println("Hello World 1");
 		setContentView(R.layout.activity_main);
-//		new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while (true) {
-//                    try {
-//                    	
-//                        Thread.sleep(5000);
-//                        someHandler.post(new Runnable() {
-//                        	
-//                            @Override
-//                            public void run() {
-//                                Criteria criteria = new Criteria();
-//            					provider = locationManager.getBestProvider(criteria, false);
-//                            	Location deviceLocation = locationManager.getLastKnownLocation(provider);
-//                            	System.out.println("Location device :: " + deviceLocation);
-//                            	
-//                            }
-//                        });
-//                    } catch (Exception e) {
-//                        System.out.println("Error in run() "+ e);
-//                    }
-//                }
-//            }
-//        }).start();
+
 		
-//		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//		Criteria criteria = new Criteria();
-//		provider = locationManager.getBestProvider(criteria, false);
-//		android.location.Location androidLocation = locationManager.getLastKnownLocation(provider);
-//		
-//		if(androidLocation != null){
-//			System.out.println("Provider -- " + provider);
-//			onLocationChanged(androidLocation);
-//		}else{
-//			System.out.println("No location affable");
-//		}
-//		
-		System.out.println("Hello World 2");
-		//boolean isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-		//boolean isNetworkEnable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-		boolean isGPSEnable = true;
-		boolean isNetworkEnable = true;
-		System.out.println("Hello World 3 with this bools " + isGPSEnable +" - "+ isNetworkEnable);
-		if(isGPSEnable == true && isNetworkEnable == true){
-			System.out.println("Hello World 4");
+		LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+		if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
 			LocationResult locationResult = new LocationResult(){
 			    @Override
 			    public void gotLocation(Location location){
@@ -94,7 +52,6 @@ public class MainActivity extends Activity implements LocationListener {
 			GetLocation myLocation = new GetLocation();
 			myLocation.getLocation(this, locationResult);
 		} else {
-			System.out.println("Hello World 5");
 			showGPSDisabledAlertToUser();
 		}
 		
