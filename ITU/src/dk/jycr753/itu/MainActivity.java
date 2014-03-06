@@ -90,11 +90,11 @@ public class MainActivity extends Activity implements LocationListener {
 		TextView textViewAndroidLat = (TextView) findViewById(R.id.set_location_text_view);
 		DecimalFormat formater = (DecimalFormat)DecimalFormat.getInstance(Locale.US); 
 		formater.applyPattern("00.00");
-		String tmp = formater.format(distanceToITU);
+		String distanceString = formater.format(distanceToITU);
 		if(distanceToITU > 0.2){
-			textViewAndroidLat.setText(tmp + " KM from ITU");
+			textViewAndroidLat.setText(distanceString + " KM from ITU");
 		}else{
-			textViewAndroidLat.setText("You Are in ITU");
+			textViewAndroidLat.setText("You Are in ITU" + distanceString);
 		}
 		
 		
@@ -104,6 +104,10 @@ public class MainActivity extends Activity implements LocationListener {
 	private static double getDistance( double lat2 ,double lon2){
 		double lat1 = 55.669669;
 		double lon1 = 12.5880716;
+		lat1 = Math.toRadians(lat1);
+		lon1 = Math.toRadians(lon1);
+		lat2 = Math.toRadians(lat2);
+		lon2 = Math.toRadians(lon2);
 		// formula
 		//d=acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon1-lon2));	
 		double distanceCalculation = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));		
@@ -111,13 +115,8 @@ public class MainActivity extends Activity implements LocationListener {
 		double kmfromlocation = finalDistance * 1.609344;
 		 
 		 return kmfromlocation;
-	 }
-	
-	private static double reduceNumberOfDecimals(double number){
-		DecimalFormat formater = (DecimalFormat)DecimalFormat.getInstance(Locale.US); 
-		formater.applyPattern("00.00");
-		return Math.round(number * 10000);
 	}
+	
 
 
 	@Override
