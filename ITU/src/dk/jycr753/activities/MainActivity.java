@@ -1,9 +1,12 @@
-package dk.jycr753.itu;
+package dk.jycr753.activities;
 
-import java.text.DecimalFormat;
-import java.util.Locale;
+//import java.text.DecimalFormat;
+//import java.util.Locale;
 
-import dk.jycr753.itu.GetLocation.LocationResult;
+import dk.jycr753.itu.R;
+import dk.jycr753.location.CalculateDistance;
+import dk.jycr753.location.GetLocation;
+import dk.jycr753.location.GetLocation.LocationResult;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,6 +16,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.location.Criteria;
@@ -22,38 +26,75 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	private LocationManager locationManager;
 	private String provider;
+	private Location currentLocation = null; 
+	private final double minDistanceToActivateProgram = 0.210;
+//	private Handler handlerRunnable = new Handler();
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
 		
 		LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 		if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
 			LocationResult locationResult = new LocationResult(){
 			    @Override
 			    public void gotLocation(Location location){
-			        TextView gotLocation = (TextView)findViewById(R.id.set_location_text_view);
-			        gotLocation.setText("Got it");
-			       
-			        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			    	locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 					Criteria criteria = new Criteria();
 					provider = locationManager.getBestProvider(criteria, false);
-					Location androidLocation = locationManager.getLastKnownLocation(provider);
-					if(androidLocation != null){
-						onLocationChanged(location);
-					}else{
-						Toast.makeText(getApplicationContext(), "Error Bitch",
-								   Toast.LENGTH_LONG).show();
+					Location androidCurrentLocation = locationManager.getLastKnownLocation(provider);
+					if(androidCurrentLocation != null){
+						currentLocation = androidCurrentLocation;
 					}
+//					else if(!currentLocation.equals(androidCurrentLocation)){
+//						
+//						Toast.makeText(getApplicationContext(), "Looking "+currentLocation,
+//								   Toast.LENGTH_LONG).show();
+//						
+//						
+//					}else {
+//						
+//						new Thread(new Runnable() {
+//				        
+//							@Override
+//				            public void run() {
+//				                while (true) {
+//				                    try {
+//				                    	
+//				                        Thread.sleep(4000);
+//				                        handlerRunnable.post(new Runnable() {
+//
+//											@Override
+//											public void run() {
+//												System.out.println("Looking...");
+//												locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//												Criteria criteria = new Criteria();
+//												provider = locationManager.getBestProvider(criteria, false);
+//												Location androidCurrentLocation = locationManager.getLastKnownLocation(provider);
+//												currentLocation = androidCurrentLocation;
+//											}
+//				                        
+//				                        
+//				                        });
+//				                    } catch (Exception e) {
+//				                        System.out.println("Error in run() "+ e);
+//				                    }
+//				                }
+//				            }
+//				        }).start();
+//					}
 					
-			        
+			        TextView gotLocation = (TextView)findViewById(R.id.set_location_text_view);
+			        gotLocation.setText("Got it");
+			        onLocationChanged(location);
+					
 			    }
 			};
 			GetLocation myLocation = new GetLocation();
 			myLocation.getLocation(this, locationResult);
+		
 		} else {
 			showGPSDisabledAlertToUser();
 		}
@@ -85,39 +126,27 @@ public class MainActivity extends Activity implements LocationListener {
 				   Toast.LENGTH_SHORT).show();
 		double lat = (double)(location.getLatitude());
 		double log = (double)(location.getLongitude());
-		double distanceToITU = getDistance(lat, log );
-		//distanceToITU = reduceNumberOfDecimals(distanceToITU);
+		double distanceToITU = CalculateDistance.getDistance(lat, log );
+		
 		TextView textViewAndroidLat = (TextView) findViewById(R.id.set_location_text_view);
-		DecimalFormat formater = (DecimalFormat)DecimalFormat.getInstance(Locale.US); 
-		formater.applyPattern("00.00");
-		String distanceString = formater.format(distanceToITU);
-		if(distanceToITU > 0.2){
-			textViewAndroidLat.setText(distanceString + " KM from ITU");
+		int finalDistanceMobileFromITU = Double.compare(distanceToITU, minDistanceToActivateProgram);
+		
+		if(finalDistanceMobileFromITU < 0){ 
+		
+			textViewAndroidLat.setText(String.valueOf(finalDistanceMobileFromITU) + " KM from ITU");
+		
 		}else{
-			textViewAndroidLat.setText("You Are in ITU" + distanceString);
+			
+			Intent changeToNextIntent = new Intent(MainActivity.this, InITUActivity.class);
+			MainActivity.this.startActivity(changeToNextIntent);
+			
+			
 		}
 		
 		
 		
 	}
 	
-	private static double getDistance( double lat2 ,double lon2){
-		double lat1 = 55.669669;
-		double lon1 = 12.5880716;
-		lat1 = Math.toRadians(lat1);
-		lon1 = Math.toRadians(lon1);
-		lat2 = Math.toRadians(lat2);
-		lon2 = Math.toRadians(lon2);
-		// formula
-		//d=acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon1-lon2));	
-		double distanceCalculation = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));		
-		double finalDistance = distanceCalculation * 60 * 1.1515;
-		double kmfromlocation = finalDistance * 1.609344;
-		 
-		 return kmfromlocation;
-	}
-	
-
 
 	@Override
 	public void onProviderDisabled(String provider) {
