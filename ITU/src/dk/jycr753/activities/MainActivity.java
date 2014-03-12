@@ -3,6 +3,7 @@ package dk.jycr753.activities;
 //import java.text.DecimalFormat;
 //import java.util.Locale;
 
+import dk.jycr753.basic.BasicMathCalculations;
 import dk.jycr753.itu.R;
 import dk.jycr753.location.CalculateDistance;
 import dk.jycr753.location.GetLocation;
@@ -16,7 +17,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.location.Criteria;
@@ -26,8 +26,6 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	private LocationManager locationManager;
 	private String provider;
-	private Location currentLocation = null; 
-	private final double minDistanceToActivateProgram = 0.210;
 //	private Handler handlerRunnable = new Handler();
 	
 	
@@ -35,7 +33,7 @@ public class MainActivity extends Activity implements LocationListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+		System.out.println("We are Loading....");
 		LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 		if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
 			LocationResult locationResult = new LocationResult(){
@@ -46,45 +44,8 @@ public class MainActivity extends Activity implements LocationListener {
 					provider = locationManager.getBestProvider(criteria, false);
 					Location androidCurrentLocation = locationManager.getLastKnownLocation(provider);
 					if(androidCurrentLocation != null){
-						currentLocation = androidCurrentLocation;
+						//Location currentLocation = androidCurrentLocation;
 					}
-//					else if(!currentLocation.equals(androidCurrentLocation)){
-//						
-//						Toast.makeText(getApplicationContext(), "Looking "+currentLocation,
-//								   Toast.LENGTH_LONG).show();
-//						
-//						
-//					}else {
-//						
-//						new Thread(new Runnable() {
-//				        
-//							@Override
-//				            public void run() {
-//				                while (true) {
-//				                    try {
-//				                    	
-//				                        Thread.sleep(4000);
-//				                        handlerRunnable.post(new Runnable() {
-//
-//											@Override
-//											public void run() {
-//												System.out.println("Looking...");
-//												locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//												Criteria criteria = new Criteria();
-//												provider = locationManager.getBestProvider(criteria, false);
-//												Location androidCurrentLocation = locationManager.getLastKnownLocation(provider);
-//												currentLocation = androidCurrentLocation;
-//											}
-//				                        
-//				                        
-//				                        });
-//				                    } catch (Exception e) {
-//				                        System.out.println("Error in run() "+ e);
-//				                    }
-//				                }
-//				            }
-//				        }).start();
-//					}
 					
 			        TextView gotLocation = (TextView)findViewById(R.id.set_location_text_view);
 			        gotLocation.setText("Got it");
@@ -121,19 +82,18 @@ public class MainActivity extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
 		Toast.makeText(getApplicationContext(), "Getting Data..",
 				   Toast.LENGTH_SHORT).show();
 		double lat = (double)(location.getLatitude());
 		double log = (double)(location.getLongitude());
 		double distanceToITU = CalculateDistance.getDistance(lat, log );
-		
+		double finalOutput  = BasicMathCalculations.cutDoubleDecimals(distanceToITU);
 		TextView textViewAndroidLat = (TextView) findViewById(R.id.set_location_text_view);
-		int finalDistanceMobileFromITU = Double.compare(distanceToITU, minDistanceToActivateProgram);
+		textViewAndroidLat.setText(String.valueOf(finalOutput));
 		
-		if(finalDistanceMobileFromITU < 0){ 
+		if(finalOutput > 0.200){ 
 		
-			textViewAndroidLat.setText(String.valueOf(finalDistanceMobileFromITU) + " KM from ITU");
+			textViewAndroidLat.setText(String.valueOf(finalOutput) + " KM from ITU");
 		
 		}else{
 			

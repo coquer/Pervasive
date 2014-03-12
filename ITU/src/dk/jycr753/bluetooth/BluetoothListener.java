@@ -3,14 +3,15 @@ package dk.jycr753.bluetooth;
 import android.bluetooth.BluetoothDevice;
 
 public class BluetoothListener {
+	@SuppressWarnings("unused")
+	private String deviceMacAddress = GetDeviceBluetoothInfo.getDeviceMacAddress();
 	
 	
-	
-	public boolean isThereAnyConnectionAlive(BluetoothDevice device, int profile){
+	public static boolean isThereAnyConnectionAlive(){
 		
 		
 		
-		return false;
+		return true;
 	}
 	
 	

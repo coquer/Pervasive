@@ -3,11 +3,7 @@ package dk.jycr753.location;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;

@@ -9,7 +9,6 @@ public class GetDeviceBluetoothInfo {
 		if(!deviceMacAddress.isEmpty() && isBluetoothEnable()){
 			return deviceMacAddress;
 		}
-		
 		return null;
 	}
 	
@@ -23,7 +22,6 @@ public class GetDeviceBluetoothInfo {
 				return false;
 			}
 		}
-		
 		return true;
 	}
 	
@@ -31,11 +29,7 @@ public class GetDeviceBluetoothInfo {
 		if(deviceMacAddress.isEmpty()){
 			return null;
 		}
-		
 		String finalNonColumnsMacAddress = deviceMacAddress.replaceAll(":", "");
-		
-		
-		
 		return finalNonColumnsMacAddress;
 	}
 	
