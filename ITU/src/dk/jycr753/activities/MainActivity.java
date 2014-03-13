@@ -17,6 +17,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.location.Criteria;
@@ -33,7 +35,8 @@ public class MainActivity extends Activity implements LocationListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		System.out.println("We are Loading....");
+		final ProgressBar progressBar = (ProgressBar) findViewById(R.id.gettingContentProgressBar);
+		progressBar.setVisibility(View.VISIBLE);
 		LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 		if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
 			LocationResult locationResult = new LocationResult(){
@@ -90,13 +93,14 @@ public class MainActivity extends Activity implements LocationListener {
 		double finalOutput  = BasicMathCalculations.cutDoubleDecimals(distanceToITU);
 		TextView textViewAndroidLat = (TextView) findViewById(R.id.set_location_text_view);
 		textViewAndroidLat.setText(String.valueOf(finalOutput));
-		
+		final ProgressBar progressBar = (ProgressBar) findViewById(R.id.gettingContentProgressBar);
+		progressBar.setVisibility(View.VISIBLE);
 		if(finalOutput > 0.200){ 
-		
+			progressBar.setVisibility(View.GONE);
 			textViewAndroidLat.setText(String.valueOf(finalOutput) + " KM from ITU");
 		
 		}else{
-			
+			progressBar.setVisibility(View.GONE);
 			Intent changeToNextIntent = new Intent(MainActivity.this, InITUActivity.class);
 			MainActivity.this.startActivity(changeToNextIntent);
 			
