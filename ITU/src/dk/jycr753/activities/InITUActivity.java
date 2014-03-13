@@ -1,10 +1,12 @@
 package dk.jycr753.activities;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,12 +15,17 @@ import dk.jycr753.bluetooth.GetDeviceBluetoothInfo;
 import dk.jycr753.bluetooth.PossibleBluetoothDevices;
 import dk.jycr753.itu.R;
 import dk.jycr753.location.GetCurrentZone;
-import dk.jycr753.network.JsonParser;
-import dk.jycr753.strings.BlipURi;
 
 public class InITUActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+	        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+	                .permitAll().build();
+	        StrictMode.setThreadPolicy(policy);
+	    }
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_itu_layout);
 		final ProgressBar progressBar = (ProgressBar) findViewById(R.id.gettingContentProgressBar);
@@ -62,7 +69,13 @@ public class InITUActivity extends Activity {
 				} catch (URISyntaxException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}	
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 				
 				
 			}else{
