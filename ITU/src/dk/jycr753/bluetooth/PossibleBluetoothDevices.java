@@ -1,42 +1,46 @@
 package dk.jycr753.bluetooth;
 
+import java.net.URISyntaxException;
+
+import org.json.JSONObject;
+
 import dk.jycr753.network.JsonParser;
 import dk.jycr753.strings.BlipURi;
 
-
 public class PossibleBluetoothDevices {
-	
-	public static boolean isDeviceLegalToConnect(String deviceMacAddress){
+
+	public static boolean isDeviceLegalToConnect(String deviceMacAddress)
+			throws URISyntaxException {
 		@SuppressWarnings("unused")
-		String finalMacAddressTest = GetDeviceBluetoothInfo.removeColumnsFromMacAddress(deviceMacAddress);
-		String allLocationUrl = BlipURi.allLocationsUrl();
-		String getJsonString = JsonParser.createJsonParserObject(allLocationUrl);
-		
-		if(!getJsonString.isEmpty()){
-			
+		String finalMacAddressTest = GetDeviceBluetoothInfo
+				.removeColumnsFromMacAddress(deviceMacAddress);// good
+		String allLocationUrl = BlipURi.allLocationsUrl();// good
+		JSONObject getJsonString = JsonParser.getJSONFromUrl(allLocationUrl, null, 1);//good?
+
+		if (getJsonString == null) {
+
 			return true;
-		
-		}else{
-		
-//		String getJsonString = JsonParser.createJsonParserObject(allLocationUrl);
-		//String getJsonString = GetJsonInBackground.
-//		try{
-//			
-//			JSONArray allLocationJSONArray =  null;
-//			for(int ja = 0; ja < allLocationJSONArray.length(); ja ++){
-//				String avalibleDevicesMacAddres = allLocationJSONArray.getString(ja);
-//				if(avalibleDevicesMacAddres.equals(removedColumsDeviceToBeConnected)){
-//					return true;
-//				}
-//			}
-//			
-//		}catch(JSONException e){
-//			//Log.println("Error", e);
-//		}
-		
-		
+
+		} else {
+
 			return false;
+
 		}
+
+		// try{
+		//
+		// JSONArray allLocationJSONArray = null;
+		// for(int ja = 0; ja < allLocationJSONArray.length(); ja ++){
+		// String avalibleDevicesMacAddres = allLocationJSONArray.getString(ja);
+		// if(avalibleDevicesMacAddres.equals(removedColumsDeviceToBeConnected)){
+		// return true;
+		// }
+		// }
+		//
+		// }catch(JSONException e){
+		// //Log.println("Error", e);
+		// }
+
 	}
 
 }

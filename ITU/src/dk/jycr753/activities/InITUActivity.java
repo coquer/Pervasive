@@ -1,5 +1,7 @@
 package dk.jycr753.activities;
 
+import java.net.URISyntaxException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,18 +45,24 @@ public class InITUActivity extends Activity {
 				/***************/
 				//temporal work to test devices.....
 				String testMacAddress = "00:a0:96:09:1c:36";
-				boolean testIfProvidedMacAddressIsValid = PossibleBluetoothDevices.isDeviceLegalToConnect(testMacAddress);
-				//boolean dumbassAndroid = true;
-				if(testIfProvidedMacAddressIsValid){
+				boolean testIfProvidedMacAddressIsValid;
+				try {
+					testIfProvidedMacAddressIsValid = PossibleBluetoothDevices.isDeviceLegalToConnect(testMacAddress);
+					if(testIfProvidedMacAddressIsValid){
+						
+						readytext.setText("true --- ");
+						progressBar.setVisibility(View.GONE);
 					
-					readytext.setText("true --- ");
-					progressBar.setVisibility(View.GONE);
+					}else{
+						progressBar.setVisibility(View.GONE);
+						readytext.setText("false");
+					
+					}
 				
-				}else{
-					progressBar.setVisibility(View.GONE);
-					readytext.setText("false");
-				
-				}
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
 				
 				
 			}else{

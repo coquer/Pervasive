@@ -1,109 +1,115 @@
 package dk.jycr753.network;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import android.util.Log;
 
 public class JsonParser {
+	
+	static InputStream is = null;
+    static JSONObject jObj = null;
+    static String json = "";
+    static int GET = '1';
+    static int POST ='2';
 
-	public static String createJsonParserObject(String stringUrlToJson) {
+    public JsonParser() {
+    	
+    }
 
-		DefaultHttpClient httpClient = new DefaultHttpClient(
-				new BasicHttpParams());
+    public static JSONObject getJSONFromUrl(String url, List<NameValuePair> params, int method) throws URISyntaxException  {
 
-		HttpPost httppost = new HttpPost(stringUrlToJson);
-		
-		InputStream inputStreamer = null;
-		String finalResult = null;
-		String finalLine = null;
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpResponse httpResponse = null;
+        HttpEntity httpentity = null;
+        HttpPost postrequest = null;
 
-		try {
-			
-			HttpResponse httpRespo = httpClient.execute(httppost);
-			HttpEntity entity = httpRespo.getEntity();
-			if (entity != null) {
-				Log.i("GOOD", EntityUtils.toString(entity));
-			} else {
-				Log.i("NULL", EntityUtils.toString(entity));
-			}
-			inputStreamer = entity.getContent();
+        try {
+            switch (method) {
+            case 1: 
+                if(params!=null){
+                    String paramString = URLEncodedUtils.format(params, "utf-8");
+                    url += "?" + paramString;   
+                }
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					inputStreamer, "UTF-8"), 8);
-			StringBuilder stringBul = new StringBuilder();
+                Log.e("URL", url);
+                HttpGet httpGet = new HttpGet(url);
+                httpResponse = httpClient.execute(httpGet);
+                httpentity = httpResponse.getEntity();          
 
-			while ((finalLine = reader.readLine()) != null) {
-				stringBul.append(finalLine + "\n");
-			}
-			finalResult = stringBul.toString();
+                break;
+            case 2: 
+                postrequest = new HttpPost(url);
+                postrequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+                httpResponse = httpClient.execute(postrequest);
+                httpentity = httpResponse.getEntity();
+                if(httpentity !=null)
+                {
+                    Log.i("RESPONSE", EntityUtils.toString(httpentity));
+                }
+                else{
+                    Log.i("NULL", EntityUtils.toString(httpentity));
+                }
+                break;
+            }
+            if(httpentity != null)
+            {
+                is = httpentity.getContent();
+                Log.i("RESPONSE", EntityUtils.toString(httpentity));
+            } else {
+                Log.i("NULL", EntityUtils.toString(httpentity));
+            }
+        } 
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-			//return finalResult;
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    is, "iso-8859-1"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            is.close();
+            json = sb.toString();
+            Log.e("JSON", json);
+        } catch (Exception e) {
+            Log.e("Buffer Error", "Error converting result " + e.toString());
+        }
 
-		} catch (Exception e) {
-			Log.i("Sorry, Some error in here dude" + e, finalResult);
-			System.out.println("FUCKING ERROR, --- " + e);
+        // try parse the string to a JSON object
+        try {
+            jObj = new JSONObject(json);            
+        } catch (JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
 
-		} finally {
-			try {
-				if (inputStreamer != null) {
-					inputStreamer.close();
-				}
-			} catch (Exception e) {
-
-			}
-		}
-		return finalResult;
-
-		
-	}
-
-	public static JSONObject jsonObject(String finalString)
-			throws JSONException {
-		if (!finalString.isEmpty()) {
-			JSONObject finalJsonObject = new JSONObject(finalString);
-			return finalJsonObject;
-		}
-
-		return null;
-	}
-
-	public static JSONArray jsonArray(String finalString) throws JSONException {
-		if (!finalString.isEmpty()) {
-			JSONArray finalJsonArray = new JSONArray(finalString);
-			return finalJsonArray;
-		}
-
-		return null;
-	}
-
-	public static boolean isThisJSONAnObject(String jsonResult)
-			throws JSONException {
-		String jsonData = null;
-		if (jsonResult.isEmpty()) {
-			return false;
-		} else {
-			jsonData = jsonResult;
-		}
-		Object jsonGenericObject = new JSONTokener(jsonData).nextValue();
-		if (jsonGenericObject instanceof JSONObject) {
-			return true;
-		} else if (jsonGenericObject instanceof JSONArray) {
-			return false;
-		} else {
-			return false;
-		}
-	}
+        // return JSON String
+        return jObj;
+    }
 }
