@@ -1,94 +1,121 @@
 package dk.jycr753.activities;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import dk.jycr753.bluetooth.BluetoothListener;
+import dk.jycr753.bluetooth.DeviceListActivity;
 import dk.jycr753.bluetooth.GetDeviceBluetoothInfo;
-import dk.jycr753.bluetooth.PossibleBluetoothDevices;
 import dk.jycr753.itu.R;
-import dk.jycr753.location.GetCurrentZone;
+import dk.jycr753.network.JsonParser;
+import dk.jycr753.strings.BlipURi;
 
 public class InITUActivity extends Activity {
+
+	JSONArray locationsArray = null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+
 		if (android.os.Build.VERSION.SDK_INT > 9) {
-	        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-	                .permitAll().build();
-	        StrictMode.setThreadPolicy(policy);
-	    }
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+					.permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+		}
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_itu_layout);
 		final ProgressBar progressBar = (ProgressBar) findViewById(R.id.gettingContentProgressBar);
 		progressBar.setVisibility(View.GONE);
-		TextView readytext = (TextView)this.findViewById(R.id.itu_text_view_title);
+		TextView readytext = (TextView) findViewById(R.id.itu_text_view_title);
+
 		String macAddress = GetDeviceBluetoothInfo.getDeviceMacAddress();
-		String finalMacAddressNoColums = GetDeviceBluetoothInfo.removeColumnsFromMacAddress(macAddress);
-		if(!GetDeviceBluetoothInfo.isBluetoothEnable()){
-			Intent enableBtIntent = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
-		    startActivityForResult(enableBtIntent, 0);
-		}
-		if(finalMacAddressNoColums != null){
+		readytext.setText(macAddress);
+		String finalMacAddressNoColums = GetDeviceBluetoothInfo
+				.removeColumnsFromMacAddress(macAddress);
+		readytext.setText(finalMacAddressNoColums);
 		
-			readytext.setText(finalMacAddressNoColums);
-			//from here Activate Listener to any available BLIP
-			if(BluetoothListener.isThereAnyConnectionAlive()){
-				progressBar.setVisibility(View.VISIBLE);
-				//so if there is any connection...
-				//get current location of device
-				String deviceCurrentZone = GetCurrentZone.getDeviceCurrentZone(finalMacAddressNoColums);
-				readytext.setText(deviceCurrentZone);
-				
-				
-				/***************/
-				//temporal work to test devices.....
-				String testMacAddress = "00:a0:96:09:1c:36";
-				boolean testIfProvidedMacAddressIsValid;
-				try {
-					testIfProvidedMacAddressIsValid = PossibleBluetoothDevices.isDeviceLegalToConnect(testMacAddress);
-					if(testIfProvidedMacAddressIsValid){
-						
-						readytext.setText("true --- ");
-						progressBar.setVisibility(View.GONE);
-					
-					}else{
-						progressBar.setVisibility(View.GONE);
-						readytext.setText("false");
-					
-					}
-				
-				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-				
-				
-			}else{
-				//something wrong in the connection.... try again!
-				readytext.setText("No Connected 2 bluetooth");
-			}
+		 //call activity temporal for now
 		
-		}else{
+		readytext.setText("Good now");
+		
+		Button getMacAddress = (Button) findViewById(R.id.getMacAddress);
+		getMacAddress.setOnClickListener(new View.OnClickListener() {
 			
-			//Handle All Errors, in Case this methods fails...
-			readytext.setText("No Data");
-		}
+			@Override
+			public void onClick(View v) {
+				
+				TextView mac = (TextView) findViewById(R.id.macaddress);
+				mac.setText("Getting mac address of current device!");
+				
+				
+				Intent changeToNextIntent = new Intent(InITUActivity.this, DeviceListActivity.class);
+				InITUActivity.this.startActivity(changeToNextIntent);
+			}
+		});
 		
+		
+		Button getThing = (Button) findViewById(R.id.button1);
+		getThing.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				new ParseJson().execute();
+			}
+		});
 	}
 	
+	public class ParseJson extends AsyncTask<String, String, JSONArray> {
+		// private ProgressDialog pDialog;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			
+			
+			
+			// pDialog.setMessage("Getting Data ...");
+			// pDialog.setIndeterminate(false);
+			// pDialog.setCancelable(true);
+			// pDialog.show();
+		}
+
+		@Override
+		protected JSONArray doInBackground(String... args) {
+			JsonParser jParser = new JsonParser();
+			// Getting JSON from URL
+			String url = BlipURi.allLocationsUrl();
+			JSONArray json = jParser.getJSONFromUrl(url);
+			return json;
+		}
+
+		@Override
+		protected void onPostExecute(JSONArray json) {
+			try {
+				String mac = GetDeviceBluetoothInfo.getDeviceMacAddress();
+				TextView readytext = (TextView) findViewById(R.id.itu_text_view_title);
+				readytext.setText(mac);
+				@SuppressWarnings("unused")
+				String locationID;
+				for (int i = 0; i < json.length(); i++) {
+					JSONObject row = json.getJSONObject(i);
+					locationID = row.getString("location-id");
+					
+				}
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

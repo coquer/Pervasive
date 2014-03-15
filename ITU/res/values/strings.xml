@@ -8,4 +8,42 @@
 	<string name="locationg_string">Getting Location</string>
 	<string name="try_again">Try again!</string>
 	<string name="loading">Loading</string>
+	
+	    <!--  BluetoothViewer -->
+    <string name="send">Send</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Viewer.</string>
+    <string name="bt_not_enabled">Bluetooth is not enabled. The app cannot function like this.</string>
+
+    <string name="btstatus_connecting_to_fmt">connecting to: %s</string>
+    <string name="btstatus_connected_to_fmt">connected to: %s</string>
+    <string name="btstatus_not_connected">not connected</string>
+
+    <!--  DeviceListActivity -->
+    <string name="scanning">Scanning for devices…</string>
+    <string name="select_device">Select a device to connect to</string>
+    <string name="none_paired">No paired devices</string>
+    <string name="none_found">No devices found</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+
+    <!-- Options Menu -->
+    <string name="menu_github">View source on GitHub</string>
+    <string name="menu_rate">Rate this app</string>
+    <string name="menu_buy">Buy the full app</string>
+
+    <string name="url_github">https://github.com/janosgyerik/bluetoothviewer</string>
+    <string name="url_rate">market://details?id=net.bluetoothviewer</string>
+    <string name="url_full_app">market://details?id=net.bluetoothviewer.full</string>
+
+    <string name="welcome_1">Welcome to Bluetooth Viewer!</string>
+    <string name="welcome_2">This app is a simple Bluetooth connection debugging tool.</string>
+    <string name="welcome_3">Connect to any Bluetooth device and see incoming raw data.</string>
+    <string name="welcome_github_pre">You can find the source code and report bugs on GitHub:</string>
+    <string name="welcome_github">https://github.com/janosgyerik/bluetoothviewer</string>
+    <string name="welcome_please_rate">If you like this app, please rate it.</string>
+    <string name="welcome_please_buy">To support the developer, please buy the full version.</string>
+	
+	
 </resources>

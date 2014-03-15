@@ -95,7 +95,7 @@ public class MainActivity extends Activity implements LocationListener {
 		textViewAndroidLat.setText(String.valueOf(finalOutput));
 		final ProgressBar progressBar = (ProgressBar) findViewById(R.id.gettingContentProgressBar);
 		progressBar.setVisibility(View.VISIBLE);
-		if(finalOutput > 28.200){ 
+		if(finalOutput > 0.200){ 
 			progressBar.setVisibility(View.GONE);
 			textViewAndroidLat.setText(String.valueOf(finalOutput) + " KM from ITU");
 		

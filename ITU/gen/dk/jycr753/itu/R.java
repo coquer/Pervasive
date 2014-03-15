@@ -24,14 +24,36 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080003;
-        public static final int gettingContentProgressBar=0x7f080001;
-        public static final int itu_text_view_title=0x7f080000;
-        public static final int set_location_text_view=0x7f080002;
+        public static final int action_settings=0x7f080014;
+        public static final int btstatus=0x7f080007;
+        public static final int button1=0x7f080003;
+        public static final int button_scan=0x7f080000;
+        public static final int button_send=0x7f08000b;
+        public static final int edit_text_out=0x7f08000a;
+        public static final int getMacAddress=0x7f080005;
+        public static final int gettingContentProgressBar=0x7f080002;
+        public static final int in=0x7f080008;
+        public static final int itu_text_view_title=0x7f080001;
+        public static final int macaddress=0x7f080004;
+        public static final int new_devices=0x7f080013;
+        public static final int paired_devices=0x7f080011;
+        public static final int send_text_container=0x7f080009;
+        public static final int set_location_text_view=0x7f080006;
+        public static final int title_new_devices=0x7f080012;
+        public static final int title_paired_devices=0x7f080010;
+        public static final int toolbar_btn_connect=0x7f08000c;
+        public static final int toolbar_btn_disconnect=0x7f08000d;
+        public static final int toolbar_btn_pause=0x7f08000e;
+        public static final int toolbar_btn_play=0x7f08000f;
     }
     public static final class layout {
-        public static final int activity_itu_layout=0x7f030000;
-        public static final int activity_main=0x7f030001;
+        public static final int activity_device_list=0x7f030000;
+        public static final int activity_itu_layout=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_main2=0x7f030003;
+        public static final int device_list=0x7f030004;
+        public static final int device_name=0x7f030005;
+        public static final int message=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -40,10 +62,43 @@ public final class R {
         public static final int Hello=0x7f050002;
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
+        public static final int bt_not_enabled=0x7f05000a;
+        public static final int bt_not_enabled_leaving=0x7f050009;
+        public static final int btstatus_connected_to_fmt=0x7f05000c;
+        public static final int btstatus_connecting_to_fmt=0x7f05000b;
+        public static final int btstatus_not_connected=0x7f05000d;
+        public static final int button_scan=0x7f050014;
         public static final int loading=0x7f050006;
         public static final int locationg_string=0x7f050004;
+        public static final int menu_buy=0x7f050017;
+        /**  Options Menu 
+         */
+        public static final int menu_github=0x7f050015;
+        public static final int menu_rate=0x7f050016;
+        public static final int none_found=0x7f050011;
+        public static final int none_paired=0x7f050010;
+        public static final int not_connected=0x7f050008;
         public static final int not_in_itu=0x7f050003;
+        /**   DeviceListActivity 
+         */
+        public static final int scanning=0x7f05000e;
+        public static final int select_device=0x7f05000f;
+        /**   BluetoothViewer 
+         */
+        public static final int send=0x7f050007;
+        public static final int title_other_devices=0x7f050013;
+        public static final int title_paired_devices=0x7f050012;
         public static final int try_again=0x7f050005;
+        public static final int url_full_app=0x7f05001a;
+        public static final int url_github=0x7f050018;
+        public static final int url_rate=0x7f050019;
+        public static final int welcome_1=0x7f05001b;
+        public static final int welcome_2=0x7f05001c;
+        public static final int welcome_3=0x7f05001d;
+        public static final int welcome_github=0x7f05001f;
+        public static final int welcome_github_pre=0x7f05001e;
+        public static final int welcome_please_buy=0x7f050021;
+        public static final int welcome_please_rate=0x7f050020;
     }
     public static final class style {
         /** 
@@ -72,5 +127,11 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f060001;
+        public static final int datetime=0x7f060004;
+        public static final int fill_width=0x7f060007;
+        public static final int inlineWeightedButton=0x7f060002;
+        public static final int list_title=0x7f060005;
+        public static final int toolbarButton=0x7f060003;
+        public static final int weighted_list_section=0x7f060006;
     }
 }
