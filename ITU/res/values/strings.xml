@@ -8,6 +8,7 @@
 	<string name="locationg_string">Getting Location</string>
 	<string name="try_again">Try again!</string>
 	<string name="loading">Loading</string>
+	<string name="welcome">Welcome</string>
 	
 	    <!--  BluetoothViewer -->
     <string name="send">Send</string>

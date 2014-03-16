@@ -28,9 +28,7 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	private LocationManager locationManager;
 	private String provider;
-//	private Handler handlerRunnable = new Handler();
-	
-	
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,11 +46,12 @@ public class MainActivity extends Activity implements LocationListener {
 					Location androidCurrentLocation = locationManager.getLastKnownLocation(provider);
 					if(androidCurrentLocation != null){
 						//Location currentLocation = androidCurrentLocation;
+						 TextView gotLocation = (TextView)findViewById(R.id.set_location_text_view);
+					     gotLocation.setText("Got it");
+					     onLocationChanged(location);
 					}
 					
-			        TextView gotLocation = (TextView)findViewById(R.id.set_location_text_view);
-			        gotLocation.setText("Got it");
-			        onLocationChanged(location);
+			       
 					
 			    }
 			};
@@ -95,19 +94,18 @@ public class MainActivity extends Activity implements LocationListener {
 		textViewAndroidLat.setText(String.valueOf(finalOutput));
 		final ProgressBar progressBar = (ProgressBar) findViewById(R.id.gettingContentProgressBar);
 		progressBar.setVisibility(View.VISIBLE);
-		if(finalOutput > 0.200){ 
+		if(finalOutput > 28.200){ 
+			
 			progressBar.setVisibility(View.GONE);
 			textViewAndroidLat.setText(String.valueOf(finalOutput) + " KM from ITU");
 		
 		}else{
+			
 			progressBar.setVisibility(View.GONE);
 			Intent changeToNextIntent = new Intent(MainActivity.this, InITUActivity.class);
 			MainActivity.this.startActivity(changeToNextIntent);
-			
-			
-		}
 		
-		
+		}	
 		
 	}
 	

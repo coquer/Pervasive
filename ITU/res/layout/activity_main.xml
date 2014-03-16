@@ -8,22 +8,21 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/set_location_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="107dp"
-        android:text="@string/not_in_itu"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    
     <ProgressBar
         android:id="@+id/gettingContentProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/set_location_text_view"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="170dp" />
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/set_location_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gettingContentProgressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="38dp"
+        android:text="@string/not_in_itu"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

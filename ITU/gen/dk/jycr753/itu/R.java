@@ -62,43 +62,44 @@ public final class R {
         public static final int Hello=0x7f050002;
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
-        public static final int bt_not_enabled=0x7f05000a;
-        public static final int bt_not_enabled_leaving=0x7f050009;
-        public static final int btstatus_connected_to_fmt=0x7f05000c;
-        public static final int btstatus_connecting_to_fmt=0x7f05000b;
-        public static final int btstatus_not_connected=0x7f05000d;
-        public static final int button_scan=0x7f050014;
+        public static final int bt_not_enabled=0x7f05000b;
+        public static final int bt_not_enabled_leaving=0x7f05000a;
+        public static final int btstatus_connected_to_fmt=0x7f05000d;
+        public static final int btstatus_connecting_to_fmt=0x7f05000c;
+        public static final int btstatus_not_connected=0x7f05000e;
+        public static final int button_scan=0x7f050015;
         public static final int loading=0x7f050006;
         public static final int locationg_string=0x7f050004;
-        public static final int menu_buy=0x7f050017;
+        public static final int menu_buy=0x7f050018;
         /**  Options Menu 
          */
-        public static final int menu_github=0x7f050015;
-        public static final int menu_rate=0x7f050016;
-        public static final int none_found=0x7f050011;
-        public static final int none_paired=0x7f050010;
-        public static final int not_connected=0x7f050008;
+        public static final int menu_github=0x7f050016;
+        public static final int menu_rate=0x7f050017;
+        public static final int none_found=0x7f050012;
+        public static final int none_paired=0x7f050011;
+        public static final int not_connected=0x7f050009;
         public static final int not_in_itu=0x7f050003;
         /**   DeviceListActivity 
          */
-        public static final int scanning=0x7f05000e;
-        public static final int select_device=0x7f05000f;
+        public static final int scanning=0x7f05000f;
+        public static final int select_device=0x7f050010;
         /**   BluetoothViewer 
          */
-        public static final int send=0x7f050007;
-        public static final int title_other_devices=0x7f050013;
-        public static final int title_paired_devices=0x7f050012;
+        public static final int send=0x7f050008;
+        public static final int title_other_devices=0x7f050014;
+        public static final int title_paired_devices=0x7f050013;
         public static final int try_again=0x7f050005;
-        public static final int url_full_app=0x7f05001a;
-        public static final int url_github=0x7f050018;
-        public static final int url_rate=0x7f050019;
-        public static final int welcome_1=0x7f05001b;
-        public static final int welcome_2=0x7f05001c;
-        public static final int welcome_3=0x7f05001d;
-        public static final int welcome_github=0x7f05001f;
-        public static final int welcome_github_pre=0x7f05001e;
-        public static final int welcome_please_buy=0x7f050021;
-        public static final int welcome_please_rate=0x7f050020;
+        public static final int url_full_app=0x7f05001b;
+        public static final int url_github=0x7f050019;
+        public static final int url_rate=0x7f05001a;
+        public static final int welcome=0x7f050007;
+        public static final int welcome_1=0x7f05001c;
+        public static final int welcome_2=0x7f05001d;
+        public static final int welcome_3=0x7f05001e;
+        public static final int welcome_github=0x7f050020;
+        public static final int welcome_github_pre=0x7f05001f;
+        public static final int welcome_please_buy=0x7f050022;
+        public static final int welcome_please_rate=0x7f050021;
     }
     public static final class style {
         /** 
