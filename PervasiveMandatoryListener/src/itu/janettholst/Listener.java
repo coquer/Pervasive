@@ -13,9 +13,19 @@ public class Listener extends AbstractContextClient implements EntityListener {
 	private RemoteEntityListenerImpl listener;
 	public String currentLocation = "";
 	public String currentName = "";
+	private String display_Id;
+	private String standardMessage;
+	private GUI display;
 	
-	public Listener(String service_uri) {
+	public Listener(String service_uri, String displayId) {
 		super(service_uri);
+		display_Id = displayId;
+		
+		standardMessage = "Welcome to " + display_Id  + ".\nDownload our Android app if you want us to assist you here on campus.";
+		
+		//Create an instance of the display that we use...
+		display = new GUI(displayId, standardMessage);
+		
 		try {
 			listener = new RemoteEntityListenerImpl();
 			listener.addEntityListener(this);
@@ -38,13 +48,14 @@ public class Listener extends AbstractContextClient implements EntityListener {
 		currentName = event.getEntity().getId();
 		System.out.println("Current name: " + currentName);
 		
-		if (currentLocation.equals("itu.zone0.zonedorsyd")){
+		if (currentLocation.equals(display_Id)){
 			//Show display with the current User's name.
-			System.out.println("Welcome " + currentName + "!");
+			//System.out.println("Welcome " + currentName + "!");
+			display.setTextToDisplay("Welcome " + currentName + " to zone "+ display_Id + "!");
 		}
 		else {
 			//Show default display
-			System.out.println("ITUITUITUITUITUITU");
+			display.setTextToDisplay(standardMessage);
 
 		}
 	}
@@ -55,3 +66,5 @@ public class Listener extends AbstractContextClient implements EntityListener {
 	}
 
 }
+
+

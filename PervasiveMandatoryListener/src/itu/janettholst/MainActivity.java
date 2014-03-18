@@ -8,8 +8,7 @@ public class MainActivity {
 	
 	public static void main(String[] args) throws RemoteException{
 		
-		String location = "";
-		Listener listener = new Listener("rmi://10.25.252.253/myService");
+		Listener listener = new Listener("rmi://10.25.252.253/MyService", "itu.zone0.zonedorsyd");
 		
 	}
 }
